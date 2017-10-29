@@ -5,6 +5,10 @@
   // "cmake.preferredGenerators": [
   //   "Visual Studio 15 2017 Win64"
   // ],
+  // The preferred CMake generator(s) to use when configuring (tried in order of listing)
+  "cmake.preferredGenerators": [
+    "Unix Makefiles"
+  ],
 
   // // The CMake platform to use when configuring
   // "cmake.platform": "Win64",

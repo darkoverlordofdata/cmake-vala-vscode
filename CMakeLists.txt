@@ -13,7 +13,8 @@
         DEPS REQUIRED 
             glib-2.0
     )
-
+    include(CMakeToolsHelpers OPTIONAL)
+    
     add_definitions(${DEPS_CFLAGS})
     link_libraries(${DEPS_LIBRARIES})
     link_directories(${DEPS_LIBRARY_DIRS})
