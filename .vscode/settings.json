@@ -1,0 +1,16 @@
+{
+    // "terminal.integrated.shell.windows": "C:\\msys64\\usr\\bin\\bash.exe",
+    // "terminal.integrated.shellArgs.windows": ["-lic", "cd $OLDPWD; exec bash"],
+  // The preferred CMake generator(s) to use when configuring (tried in order of listing)
+  // "cmake.preferredGenerators": [
+  //   "Visual Studio 15 2017 Win64"
+  // ],
+
+  // // The CMake platform to use when configuring
+  // "cmake.platform": "Win64",
+  
+  // Directories where MinGW may be installed
+  "cmake.mingwSearchDirs": [
+    "C:\\msys64\\mingw64"
+  ],  
+}
