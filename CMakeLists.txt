@@ -32,6 +32,45 @@
     
     vala_precompile (
         VALA_C ${EXEC_NAME}
+            # src/Bosco/AbstractGame.gs
+            # src/Bosco/Bag.gs
+            # src/Bosco/ECS/CoreTest.vala
+            # src/Bosco/ECS/EntityBase.gs
+            # src/Bosco/ECS/EntityPool.vala
+            # src/Bosco/ECS/Exceptions.gs
+            # src/Bosco/ECS/Group.gs
+            # src/Bosco/ECS/Matcher.gs
+            # src/Bosco/ECS/WorldBase.gs
+            # src/Bosco/Events/ComponentReplaced.gs
+            # src/Bosco/Events/EntityChanged.gs
+            # src/Bosco/Events/EntityReleased.gs
+            # src/Bosco/Events/GroupChanged.gs
+            # src/Bosco/Events/GroupUpdated.gs
+            # src/Bosco/Events/GroupsChanged.gs
+            # src/Bosco/Events/WorldChanged.gs
+            # src/Bosco/Interfaces/IComponent.vala
+            # src/Bosco/Interfaces/IMatcher.vala
+            # src/Bosco/Interfaces/ISystem.vala
+            # src/Bosco/Sprite.gs
+            # src/Bosco/Version.gs
+            src/DarkMatter.vala
+            # src/Utils/UUID.vala
+            # src/game/Components.gs
+            # src/game/Entities.gs
+            # src/game/Game.gs
+            # src/game/systems/CollisionSystem.gs
+            # src/game/systems/ColorTweenSystem.gs
+            # src/game/systems/DestroySystem.gs
+            # src/game/systems/EntitySpawningTimerSystem.gs
+            # src/game/systems/ExpiringSystem.gs
+            # src/game/systems/HudRenderSystem.gs
+            # src/game/systems/MovementSystem.gs
+            # src/game/systems/PlayerInputSystem.gs
+            # src/game/systems/RemoveOffscreenShipsSystem.gs
+            # src/game/systems/RenderPositionSystem.gs
+            # src/game/systems/ScaleTweenSystem.gs
+            # src/game/systems/SoundEffectSystem.gs
+            # src/game/systems/ViewManagerSystem.gs
             src/hello-world.vala
         PACKAGES
             gee-0.8
@@ -40,7 +79,9 @@
             gobject-2.0
         CUSTOM_VAPIS
             src/vapis/sdl2.vapi
+            src/vapis/SDL2_ttf.vapi
             src/vapis/SDL2_image.vapi
+            src/vapis/SDL2_mixer.vapi
         OPTIONS
             --vapidir=${CMAKE_SOURCE_DIR}/src/vapis
             -g
@@ -49,6 +90,8 @@
     # phase II - compile and link all the ccode
     find_package (SDL2 REQUIRED COMPONENTS main)
     find_package (SDL2_image REQUIRED)
+    find_package (SDL2_mixer REQUIRED)
+    find_package (SDL2_ttf REQUIRED)
     
     # set include directories
     include_directories (

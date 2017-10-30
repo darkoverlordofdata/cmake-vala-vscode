@@ -7,6 +7,16 @@ uses
     Utils
 
 const Tau : double = 2 * Math.PI
+const SCREEN_WIDTH: int = 800
+const SCREEN_HEIGHT: int = 600
+
+
+// #if WINDOWS
+const RES: string = "./res" 
+// #endif
+// #if !WINDOWS
+// const RES: string = Constants.PKGDATADIR
+// #endif
 
 enum Enemy
     Enemy1

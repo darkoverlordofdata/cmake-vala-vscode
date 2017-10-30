@@ -1,6 +1,7 @@
 using SDL;
 using SDL.Video;
 using SDLImage;
+public class DarkMatter: Object {}
 
 int main (string[] args) {
 
