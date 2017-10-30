@@ -1,2 +1,3 @@
 build
 .cmaketools.json
+extern/SDL*
