@@ -215,67 +215,35 @@ macro(vala_precompile output target_name)
     # after the vala compiler generates C source code.
     set(OUTPUT_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${target_name}_valac.stamp)
 
-    if (WIN32)
-        add_custom_command(
-        OUTPUT
-            ${OUTPUT_STAMP}
-        COMMAND 
-            ${VALA_EXECUTABLE} 
-        ARGS 
-            "-C" 
-            ${header_arguments} 
-            ${vapi_arguments} 
-            ${gir_arguments} 
-            ${symbols_arguments} 
-            "-b" ${CMAKE_CURRENT_SOURCE_DIR} 
-            "-d" ${DIRECTORY} 
-            ${vala_pkg_opts} 
-            ${ARGS_OPTIONS} 
-            "-g"
-            ${in_files} 
-            ${custom_vapi_arguments}
-        COMMAND
-            nodetouch
-        ARGS
-            ${OUTPUT_STAMP}
-        DEPENDS 
-            ${in_files} 
-            ${ARGS_CUSTOM_VAPIS}
-        COMMENT
-            "Generating ${out_files_display}"
-        ${gircomp_command}
-        )
-    else()
     add_custom_command(
-        OUTPUT
-            ${OUTPUT_STAMP}
-        COMMAND 
-            ${VALA_EXECUTABLE} 
-        ARGS 
-            "-C" 
-            ${header_arguments} 
-            ${vapi_arguments} 
-            ${gir_arguments} 
-            ${symbols_arguments} 
-            "-b" ${CMAKE_CURRENT_SOURCE_DIR} 
-            "-d" ${DIRECTORY} 
-            ${vala_pkg_opts} 
-            ${ARGS_OPTIONS} 
-            "-g"
-            ${in_files} 
-            ${custom_vapi_arguments}
-        COMMAND
-            touch
-        ARGS
-            ${OUTPUT_STAMP}
-        DEPENDS 
-            ${in_files} 
-            ${ARGS_CUSTOM_VAPIS}
-        COMMENT
-            "Generating ${out_files_display}"
-        ${gircomp_command}
-        )
-    endif()        
+    OUTPUT
+        ${OUTPUT_STAMP}
+    COMMAND 
+        ${VALA_EXECUTABLE} 
+    ARGS 
+        "-C" 
+        ${header_arguments} 
+        ${vapi_arguments} 
+        ${gir_arguments} 
+        ${symbols_arguments} 
+        "-b" ${CMAKE_CURRENT_SOURCE_DIR} 
+        "-d" ${DIRECTORY} 
+        ${vala_pkg_opts} 
+        ${ARGS_OPTIONS} 
+        "-g"
+        ${in_files} 
+        ${custom_vapi_arguments}
+    COMMAND
+        C:\\msys64\\usr\\bin\\touch.exe
+    ARGS
+        ${OUTPUT_STAMP}
+    DEPENDS 
+        ${in_files} 
+        ${ARGS_CUSTOM_VAPIS}
+    COMMENT
+        "Generating ${out_files_display}"
+    ${gircomp_command}
+    )
     # This command will be run twice for some reason (pass a non-empty string to COMMENT
     # in order to see it). Since valac is not executed from here, this won't be a problem.
     add_custom_command(OUTPUT ${out_files} DEPENDS ${OUTPUT_STAMP} COMMENT "")

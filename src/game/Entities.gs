@@ -52,7 +52,7 @@ def createBackground() : Entity
     return World.instance.createEntity("background"
         ).addPosition(0, 0 
         ).addScale(2, 1
-        ).addResource(RES+"/BackdropBlackLittleSparkBlack.png", null, true)
+        ).addResource(RES+"/background.png", null, true)
 
 /**
  *  Create Player

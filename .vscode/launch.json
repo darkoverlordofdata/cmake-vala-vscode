@@ -5,10 +5,10 @@
                 "name": "(Windows) Launch",
                 "type": "cppvsdbg",
                 "request": "launch",
-                "program": "${workspaceRoot}/build/Debug/hello-world.exe",
+                "program": "${workspaceRoot}/build/hello-world.exe",
                 "args": [],
                 "stopAtEntry": false,
-                "cwd": "${workspaceRoot}",
+                "cwd": "${workspaceRoot}/build",
                 "environment": [],
                 "externalConsole": false
             }

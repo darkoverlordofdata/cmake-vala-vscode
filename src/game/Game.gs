@@ -10,9 +10,9 @@ uses
 /** 
  * Start the application
  */
-// init
-//     var game = new Game()
-//     game.Run()
+init
+    var game = new Game()
+    game.Run()
 
 class Game : AbstractGame
 
@@ -32,7 +32,6 @@ class Game : AbstractGame
      */
     def override Update(delta: double)
         world.execute()
-
     /**
      *  OnInit
      *
@@ -69,7 +68,6 @@ class Game : AbstractGame
      * Handle events
      */
     def override Events(e:SDL.Event)
-
         if keys[Input.Keycode.ESCAPE] == 1
             running = false
 
