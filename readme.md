@@ -17,12 +17,17 @@ We need releases of windows binaries (android, also). But that's not likely to h
 So use this:
 
     cd build
+cmake -G "MSYS Makefiles" -D CMAKE_C_COMPILER=/c/msys64/mingw64/bin/clang.exe -D CMAKE_CXX_COMPILER=/c/msys64/mingw64/bin/clang++.exe ..
+
     cmake -G "MSYS Makefiles" ..
+    restart vscode
+
+    use F5 to debug
 
 On Linuc:
 
     cd build
-    cmake ..
+    cmake -D CMAKE_C_COMPILER=/usr/bin/clang -D CMAKE_CXX_COMPILER=/usr/bin/clang++ ..
 
 ### pros:
 * Same build chain in linux and windows

@@ -2,13 +2,14 @@
 
     cmake_minimum_required (VERSION 3.1)
     include (CMakeToolsHelpers OPTIONAL)
-
+    add_definitions ( -DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\" )
+    
     list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
     
     set (EXEC_NAME "hello-world")
-    set (RELEASE_NAME "A hello world.")
+    set (RELEASE_NAME "snappy snowflake")
     set (VERSION "0.0.1")
-    set (VERSION_INFO "whats up world")
+    set (VERSION_INFO "A hello world.")
 
     find_package (PkgConfig)
     pkg_check_modules (
@@ -38,35 +39,17 @@
     ensure_vala_version ("0.30" MINIMUM)
     include (ValaPrecompile)
     
-    configure_file ( ${CMAKE_SOURCE_DIR}/src/Config.vala.base ${CMAKE_SOURCE_DIR}/src/Config.vala )
-    add_definitions ( -DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\" )
-    
+    configure_file ( ${CMAKE_SOURCE_DIR}/src/Config.vala.base ${CMAKE_BINARY_DIR}/src/Config.vala )
+    file (RELATIVE_PATH CONFIG ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/Config.vala)
+
+    include (.lib/Bosco/include.cmake)
+    include (.lib/Utils/include.cmake)
+
     vala_precompile (
         VALA_C ${EXEC_NAME}
-            src/Config.vala
-            src/Bosco/AbstractGame.gs
-            src/Bosco/Bag.gs
-            src/Bosco/ECS/CoreTest.vala
-            src/Bosco/ECS/EntityBase.gs
-            src/Bosco/ECS/EntityPool.vala
-            src/Bosco/ECS/Exceptions.gs
-            src/Bosco/ECS/Group.gs
-            src/Bosco/ECS/Matcher.gs
-            src/Bosco/ECS/WorldBase.gs
-            src/Bosco/Events/ComponentReplaced.gs
-            src/Bosco/Events/EntityChanged.gs
-            src/Bosco/Events/EntityReleased.gs
-            src/Bosco/Events/GroupChanged.gs
-            src/Bosco/Events/GroupUpdated.gs
-            src/Bosco/Events/GroupsChanged.gs
-            src/Bosco/Events/WorldChanged.gs
-            src/Bosco/Interfaces/IComponent.vala
-            src/Bosco/Interfaces/IMatcher.vala
-            src/Bosco/Interfaces/ISystem.vala
-            src/Bosco/Sprite.gs
-            src/Bosco/Version.gs
+            ${CONFIG}
+            ${LIB_SOURCES}
             src/DarkMatter.vala
-            src/Utils/UUID.vala
             src/game/Components.gs
             src/game/Entities.gs
             src/game/Game.gs
@@ -94,11 +77,11 @@
             gobject-2.0
         OPTIONS
             --disable-warnings 
-            --verbose
             --gresources=${CMAKE_SOURCE_DIR}/data/resources.gresource.xml
             --vapidir=${CMAKE_SOURCE_DIR}/src/vapis
     )
 
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w" )
     if (WIN32)  
         set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mwindows" )
     endif ()
