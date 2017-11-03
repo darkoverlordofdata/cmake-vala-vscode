@@ -1,0 +1,41 @@
+{
+  "name": "frodo",
+  "template": "default",
+  "release": "",
+  "desc": "",
+  "version": "0.0.1",
+  "vala": "0.34",
+  "files": [
+    "src/components.vala",
+    "src/entity.vala",
+    "src/Factory.vala",
+    "src/frodo.vala",
+    "src/Game.vala",
+    "src/main.vala",
+    "src/shmupwarz.vala",
+    "src/systems/AnimationSystem.vala",
+    "src/systems/CollisionSystem.vala",
+    "src/systems/DisplaySystem.vala",
+    "src/systems/ExpireSystem.vala",
+    "src/systems/InputSystem.vala",
+    "src/systems/PhysicsSystem.vala",
+    "src/systems/RemoveSystem.vala",
+    "src/systems/ScoreSystem.vala",
+    "src/systems/SoundSystem.vala",
+    "src/systems/SpawnSystem.vala"
+  ],
+  "libraries": [
+    ".lib/mt19937",
+    ".lib/sdx",
+    ".lib/entitas",
+    ".lib/goop"
+  ],
+  "packages": [
+    "gio-2.0",
+    "glib-2.0",
+    "gobject-2.0"
+  ],
+  "resources": [],
+  "options": [],
+  "vapidir": "/src/vapis"
+}

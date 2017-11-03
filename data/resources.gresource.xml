@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/darkoverlordofdata/shmupwarz">
-    <file>assets/images/BackdropBlackLittleSparkBlack.png</file>
-    <file>assets/images/bang.png</file>
-    <file>assets/images/bullet.png</file>
-    <file>assets/images/enemy1.png</file>
-    <file>assets/images/enemy2.png</file>
-    <file>assets/images/enemy3.png</file>
-    <file>assets/images/explosion.png</file>
-    <file>assets/images/particle.png</file>
-    <file>assets/images/fighter.png</file>
-    <file>assets/images/star.png</file>
-    <file>assets/images/tom-thumb-white.png</file>
+    <file>assets/assets.atlas</file>
+    <file>assets/assets.png</file>
+    <file>assets/assets2.png</file>
     <file>assets/fonts/TitanOne-Regular.ttf</file>
+    <file>assets/fonts/OpenDyslexic-Bold.otf</file>
+    <file>assets/fonts/tom-thumb-white.png</file>
     <file>assets/sounds/asplode.wav</file>
     <file>assets/sounds/pew.wav</file>
     <file>assets/sounds/smallasplode.wav</file>

@@ -1,0 +1,193 @@
+{
+  "variant": {
+    "label": "Debug",
+    "keywordSettings": {
+      "buildType": "debug"
+    },
+    "description": "Emit debug information without performing optimizations"
+  },
+  "activeEnvironments": [],
+  "codeModel": {
+    "configurations": [
+      {
+        "name": "Debug",
+        "projects": [
+          {
+            "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/.lib/entitas",
+            "name": "entitas",
+            "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/.lib/entitas",
+            "targets": []
+          },
+          {
+            "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build",
+            "name": "frodo",
+            "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode",
+            "targets": [
+              {
+                "artifacts": [
+                  "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/frodo.exe",
+                  "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/libfrodo.dll.a",
+                  "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/frodo.pdb"
+                ],
+                "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build",
+                "fileGroups": [
+                  {
+                    "isGenerated": true,
+                    "sources": [
+                      "build/.lib/sdx/src/AbstractGame.c.rule",
+                      "build/frodo_valac.stamp.rule"
+                    ]
+                  },
+                  {
+                    "compileFlags": " -mwindows -w -g   -pthread -mms-bitfields -IC:/msys64/mingw64/include/SDL2 -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include",
+                    "defines": [
+                      "main=SDL_main"
+                    ],
+                    "includePath": [
+                      {
+                        "path": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/.lib/mt19937/src"
+                      },
+                      {
+                        "path": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build"
+                      }
+                    ],
+                    "isGenerated": true,
+                    "language": "C",
+                    "sources": [
+                      "build/.lib/sdx/src/AbstractGame.c",
+                      "build/.lib/sdx/src/ApplicationListener.c",
+                      "build/.lib/sdx/src/Color.c",
+                      "build/.lib/sdx/src/Files.c",
+                      "build/.lib/sdx/src/Font.c",
+                      "build/.lib/sdx/src/InputMultiplexer.c",
+                      "build/.lib/sdx/src/InputProcessor.c",
+                      "build/.lib/sdx/src/Screen.c",
+                      "build/.lib/sdx/src/audio/Sound.c",
+                      "build/.lib/sdx/src/audio/audio.c",
+                      "build/.lib/sdx/src/exceptions.c",
+                      "build/.lib/sdx/src/files/FileHandle.c",
+                      "build/.lib/sdx/src/files/files.c",
+                      "build/.lib/sdx/src/graphics/BitmapFont.c",
+                      "build/.lib/sdx/src/graphics/Camera.c",
+                      "build/.lib/sdx/src/graphics/NinePatch.c",
+                      "build/.lib/sdx/src/graphics/Sprite.c",
+                      "build/.lib/sdx/src/graphics/Surface.c",
+                      "build/.lib/sdx/src/graphics/TextureAtlas.c",
+                      "build/.lib/sdx/src/graphics/TextureEnums.c",
+                      "build/.lib/sdx/src/graphics/TextureRegion.c",
+                      "build/.lib/sdx/src/graphics/graphics.c",
+                      "build/.lib/sdx/src/math/Interpolation.c",
+                      "build/.lib/sdx/src/math/Timeline.c",
+                      "build/.lib/sdx/src/math/Tween.c",
+                      "build/.lib/sdx/src/math/TweenAccessor.c",
+                      "build/.lib/sdx/src/math/TweenManager.c",
+                      "build/.lib/sdx/src/math/Tweenbase.c",
+                      "build/.lib/sdx/src/math/Vector2.c",
+                      "build/.lib/sdx/src/script/JsFactory.c",
+                      "build/.lib/sdx/src/script/JsGame.c",
+                      "build/.lib/sdx/src/script/api.c",
+                      "build/.lib/sdx/src/sdx.c",
+                      "build/.lib/sdx/src/ui/Button.c",
+                      "build/.lib/sdx/src/ui/Component.c",
+                      "build/.lib/sdx/src/ui/Label.c",
+                      "build/.lib/sdx/src/utils/Cache.c",
+                      "build/.lib/sdx/src/utils/File.c",
+                      "build/.lib/sdx/src/utils/Json.c",
+                      "build/.lib/sdx/src/utils/StringTokenizer.c",
+                      "build/.lib/sdx/src/utils/utils.c",
+                      "build/.lib/entitas/src/entitas.c",
+                      "build/.lib/entitas/src/Group.c",
+                      "build/.lib/entitas/src/Matcher.c",
+                      "build/.lib/entitas/src/World.c",
+                      "build/.lib/entitas/src/events/ComponentReplaced.c",
+                      "build/.lib/entitas/src/events/EntityChanged.c",
+                      "build/.lib/entitas/src/events/EntityReleased.c",
+                      "build/.lib/entitas/src/events/GroupChanged.c",
+                      "build/.lib/entitas/src/events/GroupsChanged.c",
+                      "build/.lib/entitas/src/events/GroupUpdated.c",
+                      "build/.lib/entitas/src/events/WorldChanged.c",
+                      "build/.lib/goop/src/Class.c",
+                      "build/.lib/goop/src/Guid.c",
+                      "build/build/src/Config.c",
+                      "build/src/components.c",
+                      "build/src/entity.c",
+                      "build/src/Factory.c",
+                      "build/src/frodo.c",
+                      "build/src/Game.c",
+                      "build/src/main.c",
+                      "build/src/shmupwarz.c",
+                      "build/src/systems/AnimationSystem.c",
+                      "build/src/systems/CollisionSystem.c",
+                      "build/src/systems/DisplaySystem.c",
+                      "build/src/systems/ExpireSystem.c",
+                      "build/src/systems/InputSystem.c",
+                      "build/src/systems/PhysicsSystem.c",
+                      "build/src/systems/RemoveSystem.c",
+                      "build/src/systems/ScoreSystem.c",
+                      "build/src/systems/SoundSystem.c",
+                      "build/src/systems/SpawnSystem.c"
+                    ]
+                  },
+                  {
+                    "compileFlags": " -mwindows -w -g   -pthread -mms-bitfields -IC:/msys64/mingw64/include/SDL2 -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include",
+                    "defines": [
+                      "main=SDL_main"
+                    ],
+                    "includePath": [
+                      {
+                        "path": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/.lib/mt19937/src"
+                      },
+                      {
+                        "path": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "C",
+                    "sources": [
+                      ".lib/mt19937/src/mt19937ar.c",
+                      "build/data/resources.gresource.xml.c"
+                    ]
+                  }
+                ],
+                "fullName": "frodo.exe",
+                "linkLanguageFlags": "-mwindows -w -g",
+                "linkLibraries": "-lSDL2_image -lSDL2_mixer -lSDL2_ttf -lmingw32 -lSDL2main -lSDL2 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lintl -lm -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+                "linkerLanguage": "C",
+                "name": "frodo",
+                "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode",
+                "type": "EXECUTABLE"
+              }
+            ]
+          },
+          {
+            "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/.lib/goop",
+            "name": "goop",
+            "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/.lib/goop",
+            "targets": []
+          },
+          {
+            "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/.lib/mt19937",
+            "name": "mt19937",
+            "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/.lib/mt19937",
+            "targets": []
+          },
+          {
+            "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/data",
+            "name": "resources",
+            "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/data",
+            "targets": []
+          },
+          {
+            "buildDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/build/.lib/sdx",
+            "name": "sdx",
+            "sourceDirectory": "C:/Users/darko/Documents/GitHub/cmake-vala-vscode/.lib/sdx",
+            "targets": []
+          }
+        ]
+      }
+    ],
+    "cookie": "0.7226061855991677",
+    "inReplyTo": "codemodel",
+    "type": "reply"
+  }
+}

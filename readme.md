@@ -1,37 +1,21 @@
-# cmake-vala-vscode
+# doran
 
-I love autovala, but it doesn't work on windows. 
+Autovala is like the best thing ever. But it doesn't work on windows, and it's depencancies and scope make it unlikely that it ever will.
 
-Using the CMakeTools plugin for vscode and https://github.com/elementary/cmake-modules
+### Work In Progress
 
+Doran is a cross platform build tool/package manager for Vala. Co inspired by Autovala, Bower, and Sam (ooc package manager), doran should work on Windows 10 and Linux. So development is on windows, testing on linux.
 
-on Windows I want to use Vs2017 templates:
+Requires CMake, and MSYS2 on windows. The prototype uses coffeescript. It will probably stay coffee unless I port liquid to vala, or find an equivalent templating engine for vala.
 
-    cd build
-    cmake -G "Visual Studio 15 2017 Win64" ..
+Uses the base cmake vala files from autovala.
 
-But NO - it compiles ok, but runtime execution fails. 
-Gnome software has depedencies on mingw, so it's not working when compiled with msvc.
-We need releases of windows binaries (android, also). But that's not likely to happen until it's a priority for Gnome.
+Why cmake and out of tree builds - can't we just directly call valac? For large projects, we only have to recompile sources that have changed. This saves a lot of time during dev phases.
 
-So use this:
+### commands
+ * doran init projectname
+ * doran get package
+ * doran add filename
+ * doran remove filename
+ * doran build
 
-    cd build
-cmake -G "MSYS Makefiles" -D CMAKE_C_COMPILER=/c/msys64/mingw64/bin/clang.exe -D CMAKE_CXX_COMPILER=/c/msys64/mingw64/bin/clang++.exe ..
-
-    cmake -G "MSYS Makefiles" ..
-    restart vscode
-
-    use F5 to debug
-
-On Linuc:
-
-    cd build
-    cmake -D CMAKE_C_COMPILER=/usr/bin/clang -D CMAKE_CXX_COMPILER=/usr/bin/clang++ ..
-
-### pros:
-* Same build chain in linux and windows
-* tooling - works with CMakeTools in VSCode
-* fewer steps than autovala
-### cons:
-* manually update file lists
