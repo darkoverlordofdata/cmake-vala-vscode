@@ -56,4 +56,4 @@ add_custom_command (
 
 set (resources_gresource_xml_C_FILE ${CMAKE_CURRENT_BINARY_DIR}/resources.gresource.xml.c PARENT_SCOPE)
 set (resources_gresource_xml_H_FILE ${CMAKE_CURRENT_BINARY_DIR}/resources.gresource.xml.h PARENT_SCOPE)
-#install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/shmupwarz.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications/ )
+

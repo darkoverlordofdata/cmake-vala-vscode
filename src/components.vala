@@ -5,6 +5,7 @@
  */
 namespace Entitas 
 { 
+	
 	public struct Transform 
 	{
 		public Sdx.Math.Vector2? scale;
@@ -23,6 +24,12 @@ namespace Entitas
 
 	[SimpleType, Immutable]
 	public struct Background 
+	{
+		public bool active;
+    }
+
+	[SimpleType, Immutable]
+	public struct Background2
 	{
 		public bool active;
     }

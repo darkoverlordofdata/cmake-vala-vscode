@@ -2,13 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(Debug) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/install/src/${workspaceRootFolderName}.exe",
+            "program": "${workspaceRoot}/build/frodo.exe",
+            // "program": "${workspaceRoot}/install/src/${workspaceRootFolderName}.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}/install/src",
+            "cwd": "${workspaceRoot}/build",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",

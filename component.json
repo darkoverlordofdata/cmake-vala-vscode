@@ -1,18 +1,28 @@
 {
   "name": "frodo",
-  "template": "default",
-  "release": "",
-  "desc": "",
+  "template": "adria",
   "version": "0.0.1",
   "vala": "0.34",
+  "authors": [
+    ""
+  ],
+  "description": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "entitas": "git://github.com/darkoverlordofdata/doran-entitas",
+    "sdx": "git://github.com/darkoverlordofdata/doran-sdx",
+    "mt19937": "git://github.com/darkoverlordofdata/doran-mt19937",
+    "goop": "git://github.com/darkoverlordofdata/doran-goop"
+  },
   "files": [
     "src/components.vala",
     "src/entity.vala",
     "src/Factory.vala",
     "src/frodo.vala",
     "src/Game.vala",
-    "src/main.vala",
     "src/shmupwarz.vala",
+    "src/main.vala",
     "src/systems/AnimationSystem.vala",
     "src/systems/CollisionSystem.vala",
     "src/systems/DisplaySystem.vala",
@@ -24,18 +34,12 @@
     "src/systems/SoundSystem.vala",
     "src/systems/SpawnSystem.vala"
   ],
-  "libraries": [
-    ".lib/mt19937",
-    ".lib/sdx",
-    ".lib/entitas",
-    ".lib/goop"
-  ],
   "packages": [
     "gio-2.0",
     "glib-2.0",
     "gobject-2.0"
   ],
-  "resources": [],
   "options": [],
-  "vapidir": "/src/vapis"
+  "vapidir": "/src/vapis",
+  "console": false
 }
