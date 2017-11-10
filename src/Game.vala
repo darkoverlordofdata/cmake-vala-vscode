@@ -12,12 +12,18 @@ public class Game : AbstractGame
 		width = (int)window.bounds.w;
 		height = (int)window.bounds.h;
 
-		Sdx.SetResourceBase("/darkoverlordofdata/shmupwarz");
+		print("%d,%d\n", width, height);
+		//
+		//  Sdx.SetResourceBase("/darkoverlordofdata/shmupwarz");
 		Sdx.SetSmallFont("assets/fonts/OpenDyslexic-Bold.otf", 16);
+		print("SetSmallFont\n");
 		Sdx.SetDefaultFont("assets/fonts/OpenDyslexic-Bold.otf", 24);
+		print("SetDefaultFont\n");
 		Sdx.SetLargeFont("assets/fonts/OpenDyslexic-Bold.otf", 36);
+		print("SetLargeFont\n");
 		Sdx.SetAtlas("assets/assets.atlas");
-
+		print("Set Atlas\n");
+		
 		/**  
 		 * Create the UI 
 		 */

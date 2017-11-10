@@ -35,7 +35,9 @@ public int main(string args[]) {
 	var window = new Sdx.Ui.Window(1184, 768, "ShmupWarz");
 	var game = new Game(window);
 #else
+	print("window\n");
 	var window = new Sdx.Ui.Window(720, 512, "ShmupWarz");
+	print("game\n");
 	var game = new Game(window);
 #endif
 	game.Start();

@@ -13,7 +13,8 @@
     "entitas": "git://github.com/darkoverlordofdata/doran-entitas",
     "sdx": "git://github.com/darkoverlordofdata/doran-sdx",
     "mt19937": "git://github.com/darkoverlordofdata/doran-mt19937",
-    "goop": "git://github.com/darkoverlordofdata/doran-goop"
+    "goop": "git://github.com/darkoverlordofdata/doran-goop",
+    "zerog": "git://github.com/darkoverlordofdata/doran-zerog"
   },
   "files": [
     "src/components.vala",
@@ -21,8 +22,8 @@
     "src/Factory.vala",
     "src/frodo.vala",
     "src/Game.vala",
-    "src/shmupwarz.vala",
     "src/main.vala",
+    "src/shmupwarz.vala",
     "src/systems/AnimationSystem.vala",
     "src/systems/CollisionSystem.vala",
     "src/systems/DisplaySystem.vala",
@@ -31,14 +32,10 @@
     "src/systems/PhysicsSystem.vala",
     "src/systems/RemoveSystem.vala",
     "src/systems/ScoreSystem.vala",
-    "src/systems/SoundSystem.vala",
-    "src/systems/SpawnSystem.vala"
+    "src/systems/SpawnSystem.vala",
+    "src/systems/SoundSystem.vala"
   ],
-  "packages": [
-    "gio-2.0",
-    "glib-2.0",
-    "gobject-2.0"
-  ],
+  "packages": [],
   "options": [],
   "vapidir": "/src/vapis",
   "console": false

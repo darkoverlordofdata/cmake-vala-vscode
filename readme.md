@@ -11,7 +11,3 @@ $ vscode ..
 
 
 
-
-adriac  \
-    --builddir build \
-    --cc=clang \
