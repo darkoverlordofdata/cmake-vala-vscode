@@ -1,10 +1,10 @@
 cmake_minimum_required ( VERSION 3.1 )
 ###################################################################################
 #
-#   Build frodo
+#   Build alliance
 #
 ###################################################################################
-project ( frodo VERSION 0.0.1 )
+project ( alliance VERSION 0.0.1 )
 
 #
 # enable features
@@ -17,12 +17,9 @@ find_package (Vala REQUIRED)
 #
 #   libraries - sources & packages
 #
-add_subdirectory ( .lib/entitas )
-add_subdirectory ( .lib/goop )
-add_subdirectory ( .lib/sdx )
 add_subdirectory ( .lib/mt19937 )
 add_subdirectory ( .lib/zerog )
-if (EXISTS ${CMAKE_SOURCE_DIR}/data )
+if (EXISTS ${CMAKE_SOURCE_DIR}/data AND NOT DEFINED ZEROG )
     add_subdirectory (data)
     list ( APPEND RESOURCES ${resources_gresource_xml_C_FILE} )
 endif ()
@@ -39,47 +36,29 @@ file (RELATIVE_PATH CONFIG_VALA ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/Conf
 #
 #   out of tree build location
 #
+configure_file ( src/alliance.vala src/alliance.vala )
 configure_file ( src/components.vala src/components.vala )
+configure_file ( src/factory.vala src/factory.vala )
 configure_file ( src/entity.vala src/entity.vala )
-configure_file ( src/Factory.vala src/Factory.vala )
-configure_file ( src/frodo.vala src/frodo.vala )
-configure_file ( src/Game.vala src/Game.vala )
-configure_file ( src/main.vala src/main.vala )
-configure_file ( src/shmupwarz.vala src/shmupwarz.vala )
-configure_file ( src/systems/AnimationSystem.vala src/systems/AnimationSystem.vala )
-configure_file ( src/systems/CollisionSystem.vala src/systems/CollisionSystem.vala )
-configure_file ( src/systems/DisplaySystem.vala src/systems/DisplaySystem.vala )
-configure_file ( src/systems/ExpireSystem.vala src/systems/ExpireSystem.vala )
-configure_file ( src/systems/InputSystem.vala src/systems/InputSystem.vala )
-configure_file ( src/systems/PhysicsSystem.vala src/systems/PhysicsSystem.vala )
-configure_file ( src/systems/RemoveSystem.vala src/systems/RemoveSystem.vala )
-configure_file ( src/systems/ScoreSystem.vala src/systems/ScoreSystem.vala )
-configure_file ( src/systems/SpawnSystem.vala src/systems/SpawnSystem.vala )
-configure_file ( src/systems/SoundSystem.vala src/systems/SoundSystem.vala )
+configure_file ( src/game.vala src/game.vala )
+configure_file ( src/system.vala src/system.vala )
 #
 #   application source
 #
 list ( APPEND VALA_SOURCES ${CONFIG_VALA} )
+list ( APPEND VALA_SOURCES build/src/alliance.vala )
 list ( APPEND VALA_SOURCES build/src/components.vala )
+list ( APPEND VALA_SOURCES build/src/factory.vala )
 list ( APPEND VALA_SOURCES build/src/entity.vala )
-list ( APPEND VALA_SOURCES build/src/Factory.vala )
-list ( APPEND VALA_SOURCES build/src/frodo.vala )
-list ( APPEND VALA_SOURCES build/src/Game.vala )
-list ( APPEND VALA_SOURCES build/src/main.vala )
-list ( APPEND VALA_SOURCES build/src/shmupwarz.vala )
-list ( APPEND VALA_SOURCES build/src/systems/AnimationSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/CollisionSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/DisplaySystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/ExpireSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/InputSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/PhysicsSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/RemoveSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/ScoreSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/SpawnSystem.vala )
-list ( APPEND VALA_SOURCES build/src/systems/SoundSystem.vala )
+list ( APPEND VALA_SOURCES build/src/game.vala )
+list ( APPEND VALA_SOURCES build/src/system.vala )
 #
 #   pkg-config dependencies
 #
+list ( APPEND PACKAGES sdl2 )
+list ( APPEND PACKAGES SDL2_image )
+list ( APPEND PACKAGES SDL2_mixer )
+list ( APPEND PACKAGES SDL2_ttf )
 
 pkg_check_modules (DEPS REQUIRED ${PACKAGES})
 add_definitions ( ${DEPS_CFLAGS} )
@@ -89,13 +68,13 @@ link_directories ( ${DEPS_LIBRARY_DIRS} )
 #
 #   compiler options
 #
-list ( APPEND VALAC_OPTIONS --disable-warnings)
+list ( APPEND VALAC_OPTIONS --disable-warnings --enable-experimental )
 list ( APPEND VALAC_OPTIONS --vapidir=${CMAKE_SOURCE_DIR}/src/vapis)
 
 if (WIN32)  
     set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mwindows" )
 endif ()
-set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w" )
+set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -std=c99 -O3" )
 
 include_directories(AFTER ${INCLUDES})
 #
@@ -120,7 +99,28 @@ vala_precompile (
 #
 add_executable ( ${PROJECT_NAME} ${VALA_C} ${C_SOURCES} ${RESOURCES} )
 target_link_libraries ( ${PROJECT_NAME} m )
-install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION . )
 
+if (EXISTS ${CMAKE_SOURCE_DIR}/data AND DEFINED ZEROG)
+    install ( DIRECTORY ${CMAKE_SOURCE_DIR}/data/assets DESTINATION . )
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} 
+            -E 
+            copy_directory
+            ${CMAKE_SOURCE_DIR}/data/assets 
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets 
+    )    
+elseif (EXISTS ${CMAKE_SOURCE_DIR}/assets)
+    install ( DIRECTORY ${CMAKE_SOURCE_DIR}/assets DESTINATION . )
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} 
+            -E 
+            copy_directory
+            ${CMAKE_SOURCE_DIR}/assets 
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets 
+    )    
+endif ()
+
+include (CPack)
 
 # (generated from template: adria. Do not modify. )

@@ -1,285 +1,377 @@
-/**
+using SDL;
+using SDL.Video;
+using SDLMixer;
+/** 
  * Entity Factory
  */
-using Entitas;
-using Systems;
-using GLib.Math;
 
-const double TAU = 2.0 * Math.PI; 
+public class Factory : Object {
+    public List<Entity*> active = new List<Entity*>();
 
-/** Allocations for entity pools */
-const int COUNT_BACKGROUND 	=   1;
-const int COUNT_PLAYER 		=   1;
-const int COUNT_BULLET 		=  20;
-const int COUNT_ENEMY1 		=  15;
-const int COUNT_ENEMY2 		=   5;
-const int COUNT_ENEMY3 		=   4;
-const int COUNT_EXPLOSION 	=  10;
-const int COUNT_BANG 		=  12;
-const int COUNT_PARTICLE 	= 100;
+    const int KBULLET = 12;
+    const int KENEMY1 = 15;
+    const int KENEMY2 = 5;
+    const int KENEMY3 = 4;
+    const int KEXPLODE = 10;
+    const int KBANG = 12;
+    const int KPARTICLE = 100;
+    const int KALL = 2+KBULLET+KENEMY1+KENEMY2+KENEMY3+KEXPLODE+KBANG+KPARTICLE;
+        
+    private Game game;
+    private Systems systems;
+    private int nextId;
+    private Entity* player;
+    private Entity[] pool;
+    
+    public Factory(Game game, Renderer renderer) {
+        this.game = game;
+        systems = new Systems(game, this);
+        pool = new Entity[KALL];
+        nextId = 0;
 
-const int COUNT_ALL 
-		= COUNT_BACKGROUND
-		+ COUNT_PLAYER
-		+ COUNT_BULLET
-		+ COUNT_ENEMY1
-		+ COUNT_ENEMY2
-		+ COUNT_ENEMY3
-		+ COUNT_EXPLOSION
-		+ COUNT_BANG
-		+ COUNT_PARTICLE;
+        game.addSprite(createBackground(renderer));
+        game.addSprite(createPlayer(renderer));
 
-/* entity types - each gets a pool partition  */
-enum Pool 
-{
-	BACKGROUND,
-	ENEMY1,
-	ENEMY2,
-	ENEMY3,
-	PLAYER,
-	BULLET,
-	EXPLOSION,
-	BANG,
-	PARTICLE,
-	HUD,
-	Count
-}
+        for (int i=0; i<KBULLET; i++)   createBullet(renderer);
+        for (int i=0; i<KENEMY1; i++)   createEnemy1(renderer);
+        for (int i=0; i<KENEMY2; i++)   createEnemy2(renderer);
+        for (int i=0; i<KENEMY3; i++)   createEnemy3(renderer);
+        for (int i=0; i<KEXPLODE; i++)  createExplosion(renderer);
+        for (int i=0; i<KBANG; i++)     createBang(renderer);
+        for (int i=0; i<KPARTICLE; i++) createParticle(renderer);
+        
+    }
 
+    public Entity* createBackground(Renderer renderer) {
+        var id = nextId++;
+        var scale = 2.0;
+        var surface = loadImg("assets/images/background.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-/**
- * fabricate specialized entities
- */
-public class Factory : World 
-{
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "background", 
+            active      = true, 
+            actor       = Actor.BACKGROUND, 
+            category    = Category.BACKGROUND,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h }
+        };
+        return &pool[id];
+    }
 
-	//public static Sdx.Graphics.TextureAtlas atlas;
-	public Factory() 
-	{
-		base();		
-		//atlas = new Sdx.Graphics.TextureAtlas(Sdx.Files.Default("assets/assets.atlas"));
-		SetPool(COUNT_ALL, Pool.Count, 
-			{
-				Buffer(Pool.BACKGROUND,	COUNT_BACKGROUND,	CreateBackground),
-				Buffer(Pool.PLAYER, 	COUNT_PLAYER, 		CreatePlayer),
-				Buffer(Pool.BULLET, 	COUNT_BULLET, 		CreateBullet),
-				Buffer(Pool.ENEMY1, 	COUNT_ENEMY1, 		CreateEnemy1),
-				Buffer(Pool.ENEMY2,  	COUNT_ENEMY2, 		CreateEnemy2),
-				Buffer(Pool.ENEMY3,  	COUNT_ENEMY3, 		CreateEnemy3),
-				Buffer(Pool.EXPLOSION, 	COUNT_EXPLOSION, 	CreateExplosion),
-				Buffer(Pool.BANG,      	COUNT_BANG, 		CreateBang),
-				Buffer(Pool.PARTICLE,  	COUNT_PARTICLE, 	CreateParticle)
-			}
-		);
-	}
+    public Entity* createPlayer(Renderer renderer) {
+        var id = nextId++;
+        var scale = 1.0;
+        var surface = loadImg("assets/images/spaceshipspr.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "player", 
+            active      = true, 
+            actor       = Actor.PLAYER, 
+            category    = Category.PLAYER,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h }
+        };
+        player = &pool[id];
+        return &pool[id];
+    }
 
+    public void createBullet(Renderer renderer) {
+        var id = nextId++;
+        var scale = 1.0;
+        var surface = loadImg("assets/images/bullet.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	/**
-	 * The stuff that all entities have
-	 */
-	public Entity* CreateBase(string name, int pool, float scale = Sdx.pixelFactor, bool active = false, bool centered = true) 
-	{
-		return CreateEntity(name, pool, active)
-			.SetTransform(Sdx.atlas.CreateSprite(name).SetScale(scale, scale).SetCentered(centered))
-			.AddLayer(pool);
-	}
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "bullet", 
+            active      = false, 
+            actor       = Actor.BULLET, 
+            category    = Category.BULLET,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            sound       = { Effect.PEW },
+            tint        = { 0xd2, 0xfa, 0x00, 0xffa },
+            expires     = { 1.0 },
+            health      = { 2, 2 },
+            velocity    = { 0, -800 }
+        };
+    }
 
-	/** 
-	 *	factory methods:
-	 */
-	public Entity* CreateBackground() 
-	{
-		return CreateBase("background", Pool.BACKGROUND, 2*Sdx.pixelFactor, true, false)
-			.SetBackground(true);
-	}
+    public void refreshBullet(ref Entity* entity, int x, int y)
+    { 
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.expires.value = 1.0;
+        entity.active = true;
+        game.addSprite(entity);
+    }
 
-	public Entity* CreatePlayer() 
-	{
-		return CreateBase("spaceshipspr", Pool.PLAYER, Sdx.pixelFactor, true)
-			.SetPlayer(true);
-	}
+    public void createEnemy1(Renderer renderer)
+    {
+        var id = nextId++;
+        var scale = 1.0;
+        var surface = loadImg("assets/images/enemy1.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	public Entity* CreateBullet() 
-	{
-		return CreateBase("bullet", Pool.BULLET)
-			.AddSound(new Sdx.Audio.Sound(Sdx.Files.Resource("assets/sounds/pew.wav")))
-			.AddTint(0xd2, 0xfa, 0, 0xfa)
-			.AddHealth(2, 2)
-			.AddVelocity(0, -800*Sdx.pixelFactor)
-			.SetBullet(true);
-	}
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "enemy1", 
+            active      = false, 
+            actor       = Actor.ENEMY1, 
+            category    = Category.ENEMY,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            health      = { 10, 10 },
+            velocity    = { 0, 40 }
+        };
+    }
 
-	public Entity* CreateEnemy1() 
-	{
-		return CreateBase("enemy1", Pool.ENEMY1)
-			.AddHealth(10, 10)
-			.AddVelocity(0, 40)
-			.AddText("100%", new Sdx.Graphics.Sprite.TextSprite("100%", Sdx.smallFont, Sdx.Color.LimeGreen))
-			.SetEnemy1(true);
-	}
+    public void refreshEnemy1(ref Entity* entity, int x, int y)
+    { 
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.health.current = 10;
+        entity.active = true;
+        game.addSprite(entity);
+    }
 
-	public Entity* CreateEnemy2() 
-	{
-		return CreateBase("enemy2", Pool.ENEMY2)
-			.AddHealth(20, 20)
-			.AddVelocity(0, 30)
-			.AddText("100%", new Sdx.Graphics.Sprite.TextSprite("100%", Sdx.smallFont, Sdx.Color.LimeGreen))
-			.SetEnemy2(true);
-	}
+    public void createEnemy2(Renderer renderer)
+    {
+        var id = nextId++;
+        var scale = 1.0;
+        var surface = loadImg("assets/images/enemy2.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	public Entity* CreateEnemy3() 
-	{
-		return CreateBase("enemy3", Pool.ENEMY3)
-			.AddHealth(60, 60)
-			.AddVelocity(0, 20)
-			.AddText("100%", new Sdx.Graphics.Sprite.TextSprite("100%", Sdx.smallFont, Sdx.Color.LimeGreen))
-			.SetEnemy3(true);
-	}
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "enemy2", 
+            active      = false, 
+            actor       = Actor.ENEMY2, 
+            category    = Category.ENEMY,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            health      = { 20, 20 },
+            velocity    = { 0, 30 }
+        };
+    }
 
-	public Entity* CreateExplosion() 
-	{
-		return CreateBase("explosion", Pool.EXPLOSION, 0.6f)
-			.AddSound(new Sdx.Audio.Sound(Sdx.Files.Resource("assets/sounds/asplode.wav")))
-			.AddTint(0xd2, 0xfa, 0xd2, 0x7f)
-			.AddExpires(0.2f)
-			.AddTween(0.006f, 0.6f, -3f, false, true);
-	}
+    public void refreshEnemy2(ref Entity* entity, int x, int y)
+    {
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.health.current = 20;
+        entity.active = true;
+        game.addSprite(entity);
+    }
 
-	public Entity* CreateBang() 
-	{
-		return CreateBase("explosion", Pool.BANG, 0.1f)
-			.AddSound(new Sdx.Audio.Sound(Sdx.Files.Resource("assets/sounds/smallasplode.wav")))
-			.AddTint(0xd2, 0xfa, 0xd2, 0x9f)
-			.AddExpires(0.2f)
-			.AddTween(0.001f, 0.1f, -3f, false, true);
-	}
+    public void createEnemy3(Renderer renderer)
+    {
+        var id = nextId++;
+        var scale = 1.0;
+        var surface = loadImg("assets/images/enemy3.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	public Entity* CreateParticle() 
-	{
-		return CreateBase("star", Pool.PARTICLE)
-			.AddTint(0xd2, 0xfa, 0xd2, 0xfa)
-			.AddExpires(0.75f)
-			.AddVelocity(0, 0);
-	}
-	/**
-	 * Get entity from the pool and
-	 * put it on the screen at (x,y)
-	 */
-	public void AddBackground(int x, int y) 
-	{
-		if (cache[Pool.BACKGROUND].IsEmpty()) 
-			cache[Pool.BACKGROUND].Push(CreateBackground());
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "enemy3", 
+            active      = false, 
+            actor       = Actor.ENEMY3, 
+            category    = Category.ENEMY,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            health      = { 60, 60 },
+            velocity    = { 0, 20 }
+        };
+    }
 
-		var entity = cache[Pool.BACKGROUND].Pop();
-		entity.SetShow(true);
-	}
-		
-	public void AddPlayer(int x, int y) 
-	{
-		if (cache[Pool.PLAYER].IsEmpty()) 
-			cache[Pool.PLAYER].Push(CreatePlayer());
-			
-		var entity = cache[Pool.PLAYER].Pop();
-		entity.SetShow(true);
-	}
+    public void refreshEnemy3(ref Entity* entity, int x, int y)
+    {
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.health.current = 60;
+        entity.active = true;
+        game.addSprite(entity);
+    }
 
-	public void AddBullet(int x, int y) 
-	{
-		if (cache[Pool.BULLET].IsEmpty()) 
-			cache[Pool.BULLET].Push(CreateBullet());
-			
-		var entity = cache[Pool.BULLET].Pop();
-		entity.SetShow(true)
-			.SetPosition(x, y)
-			.SetActive(true);
-	}
+    public void createExplosion(Renderer renderer)
+    {
+        var id = nextId++;
+        var scale = 0.6;
+        var surface = loadImg("assets/images/explosion.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	public void AddEnemy1(int x, int y) 
-	{
-		if (cache[Pool.ENEMY1].IsEmpty()) 
-			cache[Pool.ENEMY1].Push(CreateEnemy1());
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "explosion", 
+            active      = false, 
+            actor       = Actor.EXPLOSION, 
+            category    = Category.EXPLOSION,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            sound       = { Effect.ASPLODE },
+            tint        = { 0xd2, 0xfa, 0xd2, 0xfa },
+            expires     = { 0.2 },
+            tween       = { scale/100.0, scale, -3, false, true }
+        };
+    }
 
-		var entity = cache[Pool.ENEMY1].Pop();
-		entity.SetShow(true)
-			.SetPosition(x, y)
-			.SetHealth(10, 10)
-			.SetActive(true);
-	}
+    public void refreshExplosion(ref Entity* entity, int x, int y)
+    {
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.bounds.x = x;
+        entity.bounds.y = y;
+        entity.scale.x = 0.6;
+        entity.scale.y = 0.6;
+        entity.tween.active = true;
+        entity.expires.value = 0.2;
+        entity.active = true;
+        game.addSprite(entity);
+    }
 
-	public void AddEnemy2(int x, int y) 
-	{
-		if (cache[Pool.ENEMY2].IsEmpty()) 
-			cache[Pool.ENEMY2].Push(CreateEnemy2());
-			
-		var entity = cache[Pool.ENEMY2].Pop();
-		entity.SetShow(true)
-			.SetPosition(x, y)
-			.SetHealth(20, 20) 
-			.SetActive(true);
-	}
+    public void createBang(Renderer renderer)
+    {
+        var id = nextId++;
+        var scale = 0.4;
+        var surface = loadImg("assets/images/explosion.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	public void AddEnemy3(int x, int y) 
-	{
-		if (cache[Pool.ENEMY3].IsEmpty()) 
-			cache[Pool.ENEMY3].Push(CreateEnemy3());
-			
-		var entity = cache[Pool.ENEMY3].Pop();
-		entity.SetShow(true)
-			.SetPosition(x, y)
-			.SetHealth(60, 60)
-			.SetActive(true);
-	}
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "bang", 
+            active      = false, 
+            actor       = Actor.BANG, 
+            category    = Category.EXPLOSION,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            sound       = { Effect.SMALLASPLODE },
+            tint        = { 0xd2, 0xfa, 0xd2, 0xfa },
+            expires     = { 0.2 },
+            tween       = { scale/100.0, scale, -3, false, true }
+        };
+    }
 
-	public void AddExplosion(int x, int y) 
-	{
-		if (cache[Pool.EXPLOSION].IsEmpty()) 
-			cache[Pool.EXPLOSION].Push(CreateExplosion());
-			
-		var entity = cache[Pool.EXPLOSION].Pop();
-		entity
-			.SetShow(true)
-			.SetBounds(x, y, (int)entity.transform.aabb.w, (int)entity.transform.aabb.h)
-			.SetTween(0.006f, 0.6f, -3f, false, true)
-			.SetPosition(x, y)
-			.SetScale(0.6f*Sdx.pixelFactor, 0.6f*Sdx.pixelFactor)
-			.SetExpires(0.2f)
-			.SetActive(true);
-	}
+    public void refreshBang(ref Entity* entity, int x, int y)
+    {
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.bounds.x = x; 
+        entity.bounds.y = y; 
+        entity.scale.x = 0.4;
+        entity.scale.y = 0.4;
+        entity.tween.active = true;
+        entity.expires.value = 0.2;
+        entity.active = true;
+        game.addSprite(entity);
+    }
 
-	public void AddBang(int x, int y) 
-	{
-		if (cache[Pool.BANG].IsEmpty()) 
-			cache[Pool.BANG].Push(CreateBang());
-			
-		var entity = cache[Pool.BANG].Pop();
-		entity
-			.SetShow(true)
-			.SetBounds(x, y, (int)entity.transform.aabb.w, (int)entity.transform.aabb.h)
-			.SetTween(0.003f, 0.3f, -3f, false, true)
-			.SetPosition(x, y)
-			.SetScale(0.3f*Sdx.pixelFactor, 0.3f*Sdx.pixelFactor)
-			.SetExpires(0.2f)
-			.SetActive(true);
-	}
+    public void createParticle(Renderer renderer)
+    {
+        var id = nextId++;
+        var scale = 1.0;
+        var surface = loadImg("assets/images/star.png");
+        var w = (int)((double)surface.w*scale);
+        var h = (int)((double)surface.h*scale);
 
-	public void AddParticle(int x, int y) 
-	{
-		if (cache[Pool.PARTICLE].IsEmpty()) 
-			cache[Pool.PARTICLE].Push(CreateParticle());
-			
-		var radians = Sdx.GetRandom() * TAU;
-		var magnitude = Sdx.GetRandom() * 200;
-		var velocityX = magnitude * Math.cos(radians);
-		var velocityY = magnitude * Math.sin(radians);
-		var scale = (float)Sdx.GetRandom();
-		var entity = cache[Pool.PARTICLE].Pop();
-		entity
-			.SetShow(true)
-			.SetBounds(x, y, (int)entity.transform.aabb.w, (int)entity.transform.aabb.h)
-			.SetPosition(x, y)
-			.SetScale(scale*Sdx.pixelFactor, scale*Sdx.pixelFactor)
-			.SetVelocity((float)velocityX, (float)velocityY)
-			.SetExpires(0.75f)
-			.SetActive(true);
-	}
+        pool[id] = Entity() { 
+            id          = id, 
+            name        = "particle", 
+            active      = false, 
+            actor       = Actor.PARTICLE, 
+            category    = Category.PARTICLE,
+            position    = { 0, 0 }, 
+            bounds      = { 0, 0, w, h }, 
+            scale       = { scale, scale },
+            sprite      = { Video.Texture.create_from_surface(renderer, surface), w, h },
+            tint        = { 0xd2, 0xfa, 0xd2, 0xfa },
+            expires     = { 0.75 },
+            velocity    = { 0, 0 }
+        };
+    }
+
+    public void refreshParticle(ref Entity* entity, int x, int y) 
+    {
+        var radians = MersenneTwister.GenrandReal2() * 6.28;
+        var magnitude = MersenneTwister.GenrandReal2() * 200; 
+        var velocityX = magnitude * Math.cos(radians);
+        var velocityY = magnitude * Math.sin(radians);
+        var scale = (float)MersenneTwister.GenrandReal2();
+
+        entity.position.x = x;
+        entity.position.y = y;
+        entity.bounds.x = x; 
+        entity.bounds.y = y; 
+        entity.scale.x = scale;
+        entity.scale.y = scale;
+        entity.velocity.x = velocityX;
+        entity.velocity.y = velocityY;
+        entity.expires.value = 0.75;
+        entity.active = true;
+        game.addSprite(entity);
+    }
+
+    public void update() {
+        
+        active = new List<Entity*>();
+        var unused = new List<Entity*>();
+        for (var i = 0; i<nextId-1; i++) 
+            if (pool[i].active) active.append(&pool[i]);
+            else unused.append(&pool[i]);
+        
+        systems.spawnSystem(ref player);
+        systems.inputSystem(ref player);
+        active.foreach(e => systems.collisionSystem(ref e));
+        unused.foreach(e => systems.entitySystem(ref e));
+        active.foreach(e => systems.soundSystem(ref e));
+        active.foreach(e => systems.physicsSystem(ref e));
+        active.foreach(e => systems.expireSystem(ref e));
+        active.foreach(e => systems.tweenSystem(ref e));
+        active.foreach(e => systems.removeSystem(ref e));
+    }
+
+    public Surface loadImg(string name) {
+        var raw = new SDL.RWops.from_file(name, "r");
+        if (raw == null) {
+            print("Unable to load image %s\n", name);
+        }
+        return SDLImage.load_png(raw);
+    }
+    
+    public Chunk loadWav(string name) {
+        var raw = new SDL.RWops.from_file(name, "r");
+        if (raw == null) {
+            print("Unable to load wav %s\n", name);
+        }
+        return new SDLMixer.Chunk.WAV_RW(raw);
+    }
+    
+            
 }

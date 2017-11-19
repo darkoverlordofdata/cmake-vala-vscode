@@ -1,41 +1,30 @@
 {
-  "name": "frodo",
+  "name": "alliance",
   "template": "adria",
   "version": "0.0.1",
   "vala": "0.34",
-  "authors": [
-    ""
-  ],
-  "description": "",
+  "authors": [],
+  "description": "alliance",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "entitas": "git://github.com/darkoverlordofdata/doran-entitas",
-    "sdx": "git://github.com/darkoverlordofdata/doran-sdx",
     "mt19937": "git://github.com/darkoverlordofdata/doran-mt19937",
-    "goop": "git://github.com/darkoverlordofdata/doran-goop",
     "zerog": "git://github.com/darkoverlordofdata/doran-zerog"
   },
   "files": [
+    "src/alliance.vala",
     "src/components.vala",
+    "src/factory.vala",
     "src/entity.vala",
-    "src/Factory.vala",
-    "src/frodo.vala",
-    "src/Game.vala",
-    "src/main.vala",
-    "src/shmupwarz.vala",
-    "src/systems/AnimationSystem.vala",
-    "src/systems/CollisionSystem.vala",
-    "src/systems/DisplaySystem.vala",
-    "src/systems/ExpireSystem.vala",
-    "src/systems/InputSystem.vala",
-    "src/systems/PhysicsSystem.vala",
-    "src/systems/RemoveSystem.vala",
-    "src/systems/ScoreSystem.vala",
-    "src/systems/SpawnSystem.vala",
-    "src/systems/SoundSystem.vala"
+    "src/game.vala",
+    "src/system.vala"
   ],
-  "packages": [],
+  "packages": [
+    "sdl2",
+    "SDL2_image",
+    "SDL2_mixer",
+    "SDL2_ttf"
+  ],
   "options": [],
   "vapidir": "/src/vapis",
   "console": false
