@@ -1,6 +1,8 @@
 using SDL;
 using SDL.Video;
+#if (!EMSCRIPTEN)
 using SDLMixer;
+#endif
 /** 
  * Entity Factory
  */
@@ -365,6 +367,8 @@ public class Factory : Object {
         return SDLImage.load_png(raw);
     }
     
+    #if (!EMSCRIPTEN)
+
     public Chunk loadWav(string name) {
         var raw = new SDL.RWops.from_file(name, "r");
         if (raw == null) {
@@ -372,6 +376,6 @@ public class Factory : Object {
         }
         return new SDLMixer.Chunk.WAV_RW(raw);
     }
-    
+    #endif    
             
 }

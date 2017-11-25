@@ -2,48 +2,82 @@ using SDL;
 using SDL.Video;
 
 
-public inline int logSDLError(string reason)
+public inline void logSDLError(string reason)
 {
     print("Unable to %s, SDL error: %s\n", reason, SDL.get_error());
-    return 0;
 }
 
 public int main(string[] args)
 {
-    if (SDL.init(SDL.InitFlag.VIDEO | SDL.InitFlag.TIMER | SDL.InitFlag.EVENTS) < 0)
-        return logSDLError("initialize SDL");
+    new Main("Alliance", 720, 600);
+    return 0;
+}
 
-    if (SDLTTF.init() < 0) 
-        return logSDLError("initialize TTF fonts");
+public class Main : Object {
 
-    if (SDLImage.init(SDLImage.InitFlags.PNG) < 0)
-        return logSDLError("initialize PNG images");
-    
-    if (SDLMixer.open(22050, SDL.Audio.AudioFormat.S16LSB, 2, 4096) == -1)
-        return logSDLError("initialize WAV audio");
- 
-    var title = "Alliance";
-    var width = 720;
-    var height = 600;
+    public string title;
+    public int width;
+    public int height;
+    public Window window;
+    public Renderer renderer;
+    public double delta;
+    public double d;
+    public int fps;
+    public int k;
+    public double t;
+    public double avg;
+    public int k2;
+    public Game game;
+    public double freq;
+    public double mark1;
 
-    var window = new Window(title, Window.POS_CENTERED, Window.POS_CENTERED, width, height, WindowFlags.SHOWN);
-    var renderer = Renderer.create(window, -1, RendererFlags.ACCELERATED | RendererFlags.PRESENTVSYNC);
-    var delta = 0.0;
-    var d = 0.0;
-    var fps = 60;
-    var k = 0;
-    var t = 0.0;
-    var avg = 0.0;
-    var k2 = 0;
-    var game = new Game(title, width, height, window, renderer);
-    var freq = SDL.Timer.get_performance_frequency();
-    var mark1 = (double)SDL.Timer.get_performance_counter()/freq;
+
+    public bool isRunning() {
+        return game.isRunning();
+    }
     
-    MersenneTwister.InitGenrand((ulong)SDL.Timer.get_performance_counter());
-    
-    game.start();
-    while (game.isRunning())
-    {
+    public Main(string title, int width, int height) {
+        this.title = title;
+        this.width = width;
+        this.height = height;
+
+        if (SDL.init(SDL.InitFlag.VIDEO | SDL.InitFlag.TIMER | SDL.InitFlag.EVENTS) < 0)
+            logSDLError("initialize SDL");
+
+        if (SDLTTF.init() < 0) 
+            logSDLError("initialize TTF fonts");
+
+        if (SDLImage.init(SDLImage.InitFlags.PNG) < 0)
+            logSDLError("initialize PNG images");
+        
+        #if (!EMSCRIPTEN)
+        if (SDLMixer.open(22050, SDL.Audio.AudioFormat.S16LSB, 2, 4096) == -1)
+            logSDLError("initialize WAV audio");
+        #endif
+        
+        window = new Window(title, Window.POS_CENTERED, Window.POS_CENTERED, width, height, WindowFlags.SHOWN);
+        renderer = Renderer.create(window, -1, RendererFlags.ACCELERATED | RendererFlags.PRESENTVSYNC);
+        delta = 0.0;
+        d = 0.0;
+        fps = 60;
+        k = 0;
+        t = 0.0;
+        avg = 0.0;
+        k2 = 0;
+        game = new Game(title, width, height, window, renderer);
+        freq = SDL.Timer.get_performance_frequency();
+        mark1 = (double)SDL.Timer.get_performance_counter()/freq;
+        
+        MersenneTwister.InitGenrand((ulong)SDL.Timer.get_performance_counter());
+        game.start();
+        #if (EMSCRIPTEN)
+        Emscripten.set_main_loop_arg(it => ((Main)it).run(), this, 0, 1);
+        #else
+        while (isRunning()) run();
+        #endif
+    }        
+
+    public void run() {
         var mark2 = (double)SDL.Timer.get_performance_counter()/freq;
         delta = mark2 - mark1;
         mark1 = mark2;
@@ -73,8 +107,7 @@ public int main(string[] args)
         }
         
         game.draw(fps, avg);
-
     }
-    return 0;
     
 }
+

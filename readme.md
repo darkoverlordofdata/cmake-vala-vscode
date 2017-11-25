@@ -11,3 +11,6 @@ $ vscode ..
 
 
 
+set_target_properties(client PROPERTIES LINK_FLAGS "-s DEMANGLE_SUPPORT=1 --preload-file assets --bind")
+
+

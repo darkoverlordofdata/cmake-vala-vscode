@@ -1,7 +1,9 @@
 using SDL;
 using SDL.Video;
 using SDLImage;
+#if (!EMSCRIPTEN)
 using SDLMixer;
+#endif
 /**
  *
  */
@@ -19,9 +21,11 @@ public class Systems : Object {
     private double enemyT1;
     private double enemyT2;
     private double enemyT3;
+    #if (!EMSCRIPTEN)
     private Chunk pew;
     private Chunk asplode;
     private Chunk smallasplode;
+    #endif
     private List<Point2d?> bullets = new List<Point2d?>();
     private List<Point2d?> enemies1 = new List<Point2d?>();
     private List<Point2d?> enemies2 = new List<Point2d?>();
@@ -38,9 +42,11 @@ public class Systems : Object {
         enemyT2 = TIMER2;
         enemyT3 = TIMER3;
             
+        #if (!EMSCRIPTEN)
         pew = factory.loadWav("assets/sounds/pew.wav");
         asplode = factory.loadWav("assets/sounds/asplode.wav");
         smallasplode = factory.loadWav("assets/sounds/smallasplode.wav");
+        #endif
     }
     
     public void inputSystem(ref Entity* entity) {
@@ -61,15 +67,21 @@ public class Systems : Object {
             switch(entity.sound.value) {
 
                 case Effect.PEW: 
+                    #if (!EMSCRIPTEN)
                     SDLMixer.play(-1, pew, 0);
+                    #endif
                     break;
 
                 case Effect.ASPLODE: 
+                    #if (!EMSCRIPTEN)
                     SDLMixer.play(-1, asplode, 0);
+                    #endif
                     break;
 
                 case Effect.SMALLASPLODE: 
+                    #if (!EMSCRIPTEN)
                     SDLMixer.play(-1, smallasplode, 0);
+                    #endif
                     break;
             }
         }
