@@ -70,14 +70,22 @@ link_directories ( ${DEPS_LIBRARY_DIRS} )
 #
 list ( APPEND VALAC_OPTIONS --disable-warnings --enable-experimental )
 list ( APPEND VALAC_OPTIONS --vapidir=${CMAKE_SOURCE_DIR}/src/vapis)
-
+#>>>
 # set ( CMAKE_C_COMPILER "C:/Users/darko/sdk/emsdk/emscripten/1.37.21/emcc.bat" )
 # set ( VALAC_OPTIONS "${VALAC_OPTIONS};--cc=emcc" )
-set ( VALAC_OPTIONS "${VALAC_OPTIONS};--define=EMSCRIPTEN" )
-set ( CUSTOM_VAPIS  "${CUSTOM_VAPIS};${CMAKE_SOURCE_DIR}/src/vapis/emscripten.vapi" )
-# set ( INCLUDES "C:/Users/darko/sdk/emsdk/emscripten/1.37.21/system/include;${INCLUDES}")
+#<<<
 
-# set ( CMAKE_C_FLAGS "{CMAKE_C_FLAGS} -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s USE_SDL_TTF=2" )
+# set ( VALAC_OPTIONS "${VALAC_OPTIONS};--define=EMSCRIPTEN" )
+# set ( CUSTOM_VAPIS  "${CUSTOM_VAPIS};${CMAKE_SOURCE_DIR}/src/vapis/emscripten.vapi" )
+
+#<<<
+# set ( INCLUDES "C:/Users/darko/sdk/emsdk/emscripten/1.37.21/system/include;${INCLUDES}")
+# set ( CMAKE_C_FLAGS "{CMAKE_C_FLAGS} -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS=\"[\"\"png\"\"]\" -s USE_SDL_TTF=2" )
+# set ( CMAKE_C_FLAGS "{CMAKE_C_FLAGS}  --preload-file assets" )
+#>>>
+#set_target_properties(client PROPERTIES LINK_FLAGS "-s DEMANGLE_SUPPORT=1 --preload-file assets --bind")
+
+
 
 if (WIN32)  
     set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mwindows" )
@@ -89,7 +97,7 @@ include_directories(AFTER ${INCLUDES})
 #   compile vala code
 #
 include (ValaVersion)
-ensure_vala_version (0.34 MINIMUM)
+ensure_vala_version (0.26 MINIMUM)
 include (ValaPrecompile)
 vala_precompile (
     VALA_C ${PROJECT_NAME}

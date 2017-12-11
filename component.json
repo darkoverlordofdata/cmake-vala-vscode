@@ -2,7 +2,7 @@
   "name": "alliance",
   "template": "adria",
   "version": "0.0.1",
-  "vala": "0.34",
+  "vala": "0.26",
   "authors": [],
   "description": "alliance",
   "license": "MIT",
