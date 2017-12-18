@@ -12,11 +12,11 @@
     "zerog": "git://github.com/darkoverlordofdata/doran-zerog"
   },
   "files": [
+    "src/Factory.vala",
+    "src/Game.vala",
     "src/alliance.vala",
     "src/components.vala",
-    "src/factory.vala",
     "src/entity.vala",
-    "src/game.vala",
     "src/system.vala"
   ],
   "packages": [

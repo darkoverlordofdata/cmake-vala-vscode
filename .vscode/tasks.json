@@ -13,18 +13,28 @@
             {
                 "isBuildCommand": true,
                 "taskName": "build",
-                "args": ["cd $OLDPWD/build; make"]
+                "args": [
+                    "cmake --build /home/bruce/Documents/GitHub/cmake-vala-vscode/build --target all --config Debug -- -j 6"
+                ]
+                // "args": ["cd $OLDPWD/build; make"]
             }
         ]
     },
     "linux": {
-        "command": "/bin/sh",
-        "args": [""],
+        "command": "/usr/bin/cmake",
+        "args": [],
         "tasks": [
             {
                 "isBuildCommand": true,
                 "taskName": "build",
-                "args": ["cd build && make"]
+                "args": [
+                    "--build",  "/home/bruce/Documents/GitHub/cmake-vala-vscode/build",
+                    "--target", "all",
+                    "--config", "Debug",
+                    "--",  
+                    "-j",  "6"
+                    
+                ]
             }
         ]
     },

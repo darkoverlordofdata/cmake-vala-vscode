@@ -41,6 +41,8 @@ public class Main : Object {
         this.width = width;
         this.height = height;
 
+        print("Hello %s\n", title);
+
         if (SDL.init(SDL.InitFlag.VIDEO | SDL.InitFlag.TIMER | SDL.InitFlag.EVENTS) < 0)
             logSDLError("initialize SDL");
 

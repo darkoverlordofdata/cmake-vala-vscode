@@ -36,21 +36,21 @@ file (RELATIVE_PATH CONFIG_VALA ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/Conf
 #
 #   out of tree build location
 #
+configure_file ( src/Factory.vala src/Factory.vala )
+configure_file ( src/Game.vala src/Game.vala )
 configure_file ( src/alliance.vala src/alliance.vala )
 configure_file ( src/components.vala src/components.vala )
-configure_file ( src/factory.vala src/factory.vala )
 configure_file ( src/entity.vala src/entity.vala )
-configure_file ( src/game.vala src/game.vala )
 configure_file ( src/system.vala src/system.vala )
 #
 #   application source
 #
 list ( APPEND VALA_SOURCES ${CONFIG_VALA} )
+list ( APPEND VALA_SOURCES build/src/Factory.vala )
+list ( APPEND VALA_SOURCES build/src/Game.vala )
 list ( APPEND VALA_SOURCES build/src/alliance.vala )
 list ( APPEND VALA_SOURCES build/src/components.vala )
-list ( APPEND VALA_SOURCES build/src/factory.vala )
 list ( APPEND VALA_SOURCES build/src/entity.vala )
-list ( APPEND VALA_SOURCES build/src/game.vala )
 list ( APPEND VALA_SOURCES build/src/system.vala )
 #
 #   pkg-config dependencies
@@ -65,26 +65,12 @@ add_definitions ( ${DEPS_CFLAGS} )
 link_libraries ( ${DEPS_LIBRARIES} )
 link_directories ( ${DEPS_LIBRARY_DIRS} )
 
+
 #
 #   compiler options
 #
 list ( APPEND VALAC_OPTIONS --disable-warnings --enable-experimental )
 list ( APPEND VALAC_OPTIONS --vapidir=${CMAKE_SOURCE_DIR}/src/vapis)
-#>>>
-# set ( CMAKE_C_COMPILER "C:/Users/darko/sdk/emsdk/emscripten/1.37.21/emcc.bat" )
-# set ( VALAC_OPTIONS "${VALAC_OPTIONS};--cc=emcc" )
-#<<<
-
-# set ( VALAC_OPTIONS "${VALAC_OPTIONS};--define=EMSCRIPTEN" )
-# set ( CUSTOM_VAPIS  "${CUSTOM_VAPIS};${CMAKE_SOURCE_DIR}/src/vapis/emscripten.vapi" )
-
-#<<<
-# set ( INCLUDES "C:/Users/darko/sdk/emsdk/emscripten/1.37.21/system/include;${INCLUDES}")
-# set ( CMAKE_C_FLAGS "{CMAKE_C_FLAGS} -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS=\"[\"\"png\"\"]\" -s USE_SDL_TTF=2" )
-# set ( CMAKE_C_FLAGS "{CMAKE_C_FLAGS}  --preload-file assets" )
-#>>>
-#set_target_properties(client PROPERTIES LINK_FLAGS "-s DEMANGLE_SUPPORT=1 --preload-file assets --bind")
-
 
 
 if (WIN32)  
